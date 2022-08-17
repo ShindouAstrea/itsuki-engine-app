@@ -1,14 +1,17 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Button, View,Text,TouchableHighlight} from 'react-native';
+import { StyleSheet, Image, View,Text} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-function ResponseView({navigation}){
+function ResponseView({navigation,route}){
+    const {photo} = route.params ;
+    const pic =  JSON.stringify(photo).slice(8,JSON.stringify(photo).length -2) ;
+    console.log(pic);
     return(
         <View style={styles.Container}>
-                <TouchableHighlight style={styles.UploadContainer}>
-                    <Text style={styles.Text}>Subir Foto</Text>
-                </TouchableHighlight>
+                <View style={{marginBottom:40}}>
+                    <Image source={{uri: pic}} style={{width:300, height:300}}/>
+                </View>
                 <TouchableOpacity onPress={()=>navigation.navigate('MoreResponse')}>
                     <View style={styles.UploadButton}>
                         <Text style={styles.TextButton}>Ver más resultados</Text>

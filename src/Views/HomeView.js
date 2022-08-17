@@ -1,27 +1,37 @@
 import React from 'react';
+
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View,Text,TouchableHighlight} from 'react-native';
+import { StyleSheet, View,Text,TouchableHighlight,Image} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import {loadImageFromGallery} from './ImagePick' ;
+import {loadImageFromGallery} from '../ImagePick' ;
+const photo = '../src/gallery.png';
 
 function HomeView({navigation}){
     const [visibleButton, setButtonVisible] = React.useState(false);
+    const [pic, setPic]= React.useState(photo);
     const setVis=() => {
         selectPhoto();
-        setButtonVisible(!visibleButton);
     }
     const selectPhoto = async() =>{
         const result = await loadImageFromGallery([1,1]);
+        if(result.status){
+            setPic(result.image) ;
+            setButtonVisible(true);
+        }
         console.log(result) ;
     }
     return(
         <View style={styles.Container}>
+            <Text style={{justifyContent: 'center',fontSize:16, textAlign: 'center',marginBottom: 20}}> Toca el siguiente cuadro para seleccionar una imágen Vuelve a hacerlo para seleccionar otra.</Text>
                 <TouchableHighlight onPress={setVis} underlayColor="#DDDDDD"style={styles.UploadContainer}>
-                            <Text style={styles.Text}>Subir Foto</Text>
+                            <View>
+                                <Image source={{uri: pic}} style={{width:300, height:300}}/>
+                            </View>
+                            
                 </TouchableHighlight>
               {
                 visibleButton &&(
-                    <TouchableOpacity onPress={()=>navigation.navigate('Response')}>
+                    <TouchableOpacity onPress={()=>navigation.navigate('Response',{photo:{pic}})}>
                             <View style={styles.UploadButton}>
                                 <Text style={styles.TextButton}>Realizar busqueda</Text>
                             </View>
