@@ -10,6 +10,14 @@
       "image": "./assets/splashF.png",
       "resizeMode": "cover"
     },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "La apliación necesita acceder a tu galeria para poder seleccionar una imágen"
+        }
+      ]
+    ],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -23,7 +31,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions":[
+        "CAMERA_ROLL",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
