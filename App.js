@@ -1,43 +1,45 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet} from 'react-native';
+import * as React from 'react';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import HomeView from './src/Views/HomeView';
 import HistoryView from './src/Views/HistoryView';
-import MoreResponseView from './src/Views/MoreResponseView';
 import SettingsView from './src/Views/SettingsView';
-const Stack = createNativeStackNavigator();
+import HomeView from './src/Views/HomeView';
+import ResponseView from './src/Views/ResponseView';
+import MoreResponseView from './src/Views/MoreResponseView';
 
+const Drawer = createDrawerNavigator();
 export default function App() {
   return (
-<>
+    <>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home"
+     
+      <Drawer.Navigator initialRouteName="Home" backBehavior="history"
+      
       screenOptions={{
-        headerStyle: {
-          backgroundColor: '#261447',
-        },
-        headerTintColor: '#ffff',
-        
         headerTitleAlign: 'center',
-      }}>
-        <Stack.Screen name="Home" component={HomeView} options={{
-        title: 'Inicio'}}/>
-        <Stack.Screen name="Settings" component={SettingsView} />
-        <Stack.Screen name="More" component={MoreResponseView} />
-        <Stack.Screen name="History" component={HistoryView} />
-      </Stack.Navigator>
-      </NavigationContainer>
-      <StatusBar style="auto" />
-      </>
+        headerTintColor:'white',
+        headerStyle:{
+          backgroundColor:'#280C3D',
+        },
+        drawerStyle: {
+          backgroundColor: '#280C3D',
+          opacity:0.9
+        },
+        drawerInactiveTintColor:'white',
+        drawerActiveTintColor:'#E94057',
+      }
+      }>
+        
+        <Drawer.Screen name="Home" component={HomeView} options={{title:'Inicio'}}/>
+        <Drawer.Screen  name="History" component={HistoryView} options={{title:'Historial de Busqueda',unmountOnBlur:true}}/>
+        <Drawer.Screen name="Settings" component={SettingsView} options={{title:'Configuración',unmountOnBlur:true}}/>
+        <Drawer.Screen name="Response" component={ResponseView} options={{title:'Resultado',drawerLabel: '',drawerItemStyle:{width: 0},unmountOnBlur:true}}/>
+        <Drawer.Screen name="MoreResponse" component={MoreResponseView} options={{title:'Más Resultados',drawerLabel: '',drawerItemStyle:{width: 0},unmountOnBlur:true}}/>
+      </Drawer.Navigator>
+    </NavigationContainer>
+    
+    </>
+    
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+{/* <Image style={{width: 200, height: 200}}source={require('./assets/icon.png')}/> */}
