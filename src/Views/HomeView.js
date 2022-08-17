@@ -2,10 +2,17 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View,Text,TouchableHighlight} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import {loadImageFromGallery} from './ImagePick' ;
+
 function HomeView({navigation}){
     const [visibleButton, setButtonVisible] = React.useState(false);
     const setVis=() => {
+        selectPhoto();
         setButtonVisible(!visibleButton);
+    }
+    const selectPhoto = async() =>{
+        const result = await loadImageFromGallery([1,1]);
+        console.log(result) ;
     }
     return(
         <View style={styles.Container}>
