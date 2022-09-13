@@ -12,3 +12,8 @@ export const loadImageFromGallery = async(array)=>{
 
     return response
 }
+export const fileToBlob =async(ruta)=>{
+    const file =await fetch(ruta);
+    const blob = await file.blob();
+    return blob ;
+}

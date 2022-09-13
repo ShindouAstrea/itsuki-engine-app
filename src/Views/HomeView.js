@@ -1,14 +1,27 @@
 import React from 'react';
 
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View,Text,TouchableHighlight,Image} from 'react-native';
+import { StyleSheet, View,Text,TouchableHighlight,Image,Button,Alert} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {loadImageFromGallery} from '../ImagePick' ;
+import * as Clipboard from 'expo-clipboard';
 const photo = '../src/gallery.png';
 
 function HomeView({navigation}){
+    const clip = 'im a text 4';
     const [visibleButton, setButtonVisible] = React.useState(false);
     const [pic, setPic]= React.useState(photo);
+
+    const [copiedText, setCopiedText] = React.useState('');
+
+    const copyToClipboard = async () => {
+      await Clipboard.setStringAsync(clip);
+      };
+  
+    const fetchCopiedText = async () => {
+      const text = await Clipboard.getStringAsync();
+      setCopiedText(text);
+    };
     const setVis=() => {
         selectPhoto();
     }
@@ -18,8 +31,8 @@ function HomeView({navigation}){
             setPic(result.image) ;
             setButtonVisible(true);
         }
-        console.log(result) ;
     }
+   
     return(
         <View style={styles.Container}>
             <Text style={{justifyContent: 'center',fontSize:16, textAlign: 'center',marginBottom: 20}}> Toca el siguiente cuadro para seleccionar una imágen Vuelve a hacerlo para seleccionar otra.</Text>
@@ -39,7 +52,12 @@ function HomeView({navigation}){
 
                 )
               }
-                        
+                <TouchableOpacity onPress={copyToClipboard}>
+                    <Text>{clip}</Text>
+                </TouchableOpacity>
+                <Button title="View copied text" onPress={fetchCopiedText} />
+               
+                <Text style={styles.copiedText}>{copiedText}</Text>   
                
                 
         <StatusBar style="auto" />
@@ -79,6 +97,10 @@ const styles= StyleSheet.create({
         fontSize:16,
         color:'#ffff',
         textAlign:'center'
+    },
+    Boton:{
+        borderRadius:10
+        
     }
     
 })
