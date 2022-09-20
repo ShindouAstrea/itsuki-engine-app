@@ -1,7 +1,6 @@
 import React from 'react';
-
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View,Text,TouchableHighlight,Image,Button,Alert} from 'react-native';
+import { StyleSheet, View,Text,TouchableHighlight,Image} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {loadImageFromGallery} from '../ImagePick' ;
 import * as Clipboard from 'expo-clipboard';
@@ -11,9 +10,24 @@ function HomeView({navigation}){
     const clip = 'im a text 4';
     const [visibleButton, setButtonVisible] = React.useState(false);
     const [pic, setPic]= React.useState(photo);
-
+    const [resultado,setResultado] = React.useState([]);
+    
     const [copiedText, setCopiedText] = React.useState('');
-
+    const listAnimes=(item) => {
+        console.log("Nombre del Anime: " + item.filename)
+       console.log("Porcentaje de coincidencia: "+parseFloat(item.similarity)*100+"%");
+    }
+    const searchAnime= async() =>{
+        await fetch(
+            `https://api.trace.moe/search?url=${encodeURIComponent(
+              "https://firebasestorage.googleapis.com/v0/b/itsuki-engine.appspot.com/o/fed879f43090492ec9e8350c848614a2.jpg?alt=media&token=b1903063-ddfe-45be-be6d-a047fdd90aeb"
+            )}`)
+       .then((response)=>response.json())
+       .then((response)=>
+        setResultado((response.result)))
+        .then(()=>resultado.forEach(listAnimes))
+       .catch((error)=>console.log( `error : ${error}`))
+    };
     const copyToClipboard = async () => {
       await Clipboard.setStringAsync(clip);
       };
@@ -44,7 +58,11 @@ function HomeView({navigation}){
                 </TouchableHighlight>
               {
                 visibleButton &&(
-                    <TouchableOpacity onPress={()=>navigation.navigate('Response',{photo:{pic}})}>
+                    <TouchableOpacity onPress={()=>{
+                        searchAnime();
+                        navigation.navigate('Response',
+                        {photo:{pic}})
+                        }}>
                             <View style={styles.UploadButton}>
                                 <Text style={styles.TextButton}>Realizar busqueda</Text>
                             </View>
@@ -52,14 +70,6 @@ function HomeView({navigation}){
 
                 )
               }
-                <TouchableOpacity onPress={copyToClipboard}>
-                    <Text>{clip}</Text>
-                </TouchableOpacity>
-                <Button title="View copied text" onPress={fetchCopiedText} />
-               
-                <Text style={styles.copiedText}>{copiedText}</Text>   
-               
-                
         <StatusBar style="auto" />
         </View>
         
