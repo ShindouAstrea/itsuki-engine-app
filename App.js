@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import HistoryView from './src/Views/HistoryView';
-import SettingsView from './src/Views/SettingsView';
-import HomeView from './src/Views/HomeView';
-import ResponseView from './src/Views/ResponseView';
-import MoreResponseView from './src/Views/MoreResponseView';
+import HistoryView from './src/Components/Views/HistoryView';
+import SettingsView from './src/Components//Views/SettingsView';
+import HomeView from './src/Components/Views/HomeView';
+import ResponseView from './src/Components/Views/ResponseView';
+import MoreResponseView from './src/Components/Views/MoreResponseView';
 
 const Drawer = createDrawerNavigator();
 export default function App() {
