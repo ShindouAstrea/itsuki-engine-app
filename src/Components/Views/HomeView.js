@@ -1,0 +1,111 @@
+import React from 'react';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, View,Text,TouchableHighlight,Image} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import {loadImageFromGallery,toBlob,toFirebase} from '../ImagePick' ;
+
+
+
+function HomeView({navigation}){
+
+    const [visibleButton, setButtonVisible] = React.useState(false);
+    const [pic, setPic]= React.useState();
+    const [resultado,setResultado] = React.useState([]);
+   
+    const listAnimes=(item) => {
+        console.log("Nombre del Anime: " + item.filename)
+       console.log("Porcentaje de coincidencia: "+parseFloat(item.similarity)*100+"%");
+    }
+    const searchAnime= async() =>{
+        await fetch(
+            `https://api.trace.moe/search?url=${encodeURIComponent(
+              "https://firebasestorage.googleapis.com/v0/b/itsuki-engine.appspot.com/o/fed879f43090492ec9e8350c848614a2.jpg?alt=media&token=b1903063-ddfe-45be-be6d-a047fdd90aeb"
+            )}`)
+       .then((response)=>response.json())
+       .then((response)=>
+        setResultado((response.result)))
+        .then(()=>resultado.forEach(listAnimes))
+       .catch((error)=>console.log( `error : ${error}`))
+    };
+   
+    const setVista=() => {
+        selectPhoto();
+    }
+    const selectPhoto = async() =>{
+        const result = await loadImageFromGallery([1,1]);
+        if(result.status){
+            setPic(result.image) ;
+            setButtonVisible(true);
+        }
+    }
+    const uploadFirebase= async() =>{
+        
+    }
+   
+    return(
+        <View style={styles.Container}>
+            <Text style={{justifyContent: 'center',fontSize:16, textAlign: 'center',marginBottom: 20}}> Toca el siguiente cuadro para seleccionar una imágen Vuelve a hacerlo para seleccionar otra.</Text>
+                <TouchableHighlight onPress={setVista} underlayColor="#DDDDDD"style={styles.UploadContainer}>
+                            <View>
+                                <Image source={{uri:pic}} style={{width:300, height:300}}/>
+                            </View>
+                            
+                </TouchableHighlight>
+              {
+                visibleButton &&(
+                    <TouchableOpacity onPress={()=>{
+                        searchAnime();
+                        navigation.navigate('Response',
+                        {photo:{pic}})
+                        }}>
+                            <View style={styles.UploadButton}>
+                                <Text style={styles.TextButton}>Realizar busqueda</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                )
+              }
+        <StatusBar style="auto" />
+        </View>
+        
+    )
+}
+export default HomeView;
+const styles= StyleSheet.create({
+    Container:{
+        backgroundColor: 'red ;',
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center' 
+
+    },
+    UploadContainer:{
+        height:300,
+        width:300,
+        justifyContent: 'center',
+        backgroundColor: "#DDDDDD",
+        marginBottom:40,
+    },
+    Text:{
+        textAlign:'center',
+        fontSize:18,
+    },
+    UploadButton:{
+        height:50,
+        justifyContent: 'center',
+        paddingLeft:10,
+        paddingRight:10,
+        borderRadius:10,
+        backgroundColor:'#E94057'
+    },
+    TextButton:{
+        fontSize:16,
+        color:'#ffff',
+        textAlign:'center'
+    },
+    Boton:{
+        borderRadius:10
+        
+    }
+    
+})
