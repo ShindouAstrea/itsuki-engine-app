@@ -1,3 +1,4 @@
+import React from 'react';
 import * as ImagePicker from "expo-image-picker";
 // Library to create a unic Id non encrypted
 import { nanoid } from 'nanoid/non-secure'
@@ -28,38 +29,24 @@ export const loadImageFromGallery = async(array)=>{
     return response
 }
 /**
- * Function to convert an image to blob format
- * @param {String} path THe path of the file to be convert
- * @returns {blob} the converted file into a blob object
- */
-export const toBlob =async(ruta)=>{
-    const file =await fetch(ruta);
-    const blob = await file.blob();
-    return blob ;
-}
-/**
  * Function to upload a image to firebase 
  * @param {blob} blob a blob file
  */
-export const toFirebase = async(blob) =>{
+export const toFirebase = async(file) =>{
     
     const nameFile =  nanoid();
     const reference = ref(storage,nameFile);
-    const img = await fetch(result.image);
+    const img = await fetch(file);
     const converted = await img.blob();
     await uploadBytes(reference,converted);
-
+    return nameFile;
 };
 /**
  * 
  * @param {String} id the id or name's file in firebase
  * @returns {String} The url of the file 
  */
-export const enlace= async(id) =>{
-    const[url,setURL]=React.useState();
-    const reference = ref(storage,id);
-    await getDownloadURL(reference)
-    .then((resultado)=>setURL(resultado));
+export const getEnlace= async(id) =>{
     
-    return url;
+    
 }
