@@ -7,7 +7,15 @@ function ResponseView({navigation,route}){
     const [copiedText, setCopiedText] = React.useState('');
     const {photo} = route.params ;
     const pic =  JSON.stringify(photo).slice(8,JSON.stringify(photo).length -2) ;
-  
+    
+    const copyToClipboard = async () => {
+        await Clipboard.setStringAsync(clip);
+        };
+    
+      const fetchCopiedText = async () => {
+        const text = await Clipboard.getStringAsync();
+        setCopiedText(text);
+      };
     return(
         <View style={styles.Container}>
                 <View style={{marginBottom:40}}>
