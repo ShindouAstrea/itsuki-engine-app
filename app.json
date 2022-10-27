@@ -32,11 +32,12 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "permissions":[
+      "permissions": [
         "CAMERA_ROLL",
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
-      ]
+      ],
+      "package": "com.shindou_astrea.itsukiengine"
     },
     "web": {
       "favicon": "./assets/favicon.png"
