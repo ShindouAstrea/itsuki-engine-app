@@ -5,22 +5,41 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Clipboard from 'expo-clipboard';
 function ResponseView({navigation,route}){
     const [copiedText, setCopiedText] = React.useState('');
-    const {photo} = route.params ;
-    const pic =  JSON.stringify(photo).slice(8,JSON.stringify(photo).length -2) ;
+    const [clip,setclip]=React.useState("");
+    let {array} = route.params ;
+    let name = array["resultado"][0] ;
+    console.log(name);
+    let video = array["resultado"][0]["image"];
+    console.log(video);
+    let listado =[{}];
+    // let arrayResultado = JSON.stringify(array);
+   
+
+    // arrayResultado = JSON.parse(arrayResultado);
     
+    // console.log(arrayResultado);
+    // arrayResultado = arrayResultado.slice(55,arrayResultado.length-2);
+    // arrayResultado = JSON.parse(arrayResultado) ;
+   
     const copyToClipboard = async () => {
-        await Clipboard.setStringAsync(clip);
+        await Clipboard.setStringAsync();
         };
     
       const fetchCopiedText = async () => {
         const text = await Clipboard.getStringAsync();
         setCopiedText(text);
-      };
+      }
     return(
         <View style={styles.Container}>
-                <View style={{marginBottom:40}}>
-                    <Image source={{uri: pic}} style={{width:300, height:300}}/>
+        
+                <View >
+                    <Image source={{uri: video}} style={styles.ImageSearched}/>
+                    <Text> Nombre:</Text>
+                  <TouchableOpacity onPress={copyToClipboard}>
+                    <Text>a</Text>
+                  </TouchableOpacity>
                 </View>
+                
         <StatusBar style="auto" />
         </View>
         
@@ -29,18 +48,27 @@ function ResponseView({navigation,route}){
 export default ResponseView;
 const styles= StyleSheet.create({
     Container:{
-        backgroundColor: 'red ;',
         flex: 1, 
         alignItems: 'center', 
-        justifyContent: 'center' 
+        marginTop:50
 
     },
-    UploadContainer:{
-        height:300,
-        width:300,
-        justifyContent: 'center',
-        backgroundColor: "#DDDDDD",
-        marginBottom:40,
+    ImageSearched:{
+        height:350,
+        width:350,
+        marginTop:20,
+        marginBottom:50,
+       alignItems:'center',
+       justifyContent: 'center',
+       shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 5,
     },
     Text:{
         textAlign:'center',
