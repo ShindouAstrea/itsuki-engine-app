@@ -1,28 +1,38 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Image, View,Text} from 'react-native';
+import { StyleSheet, Image, View,Text, Alert} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Clipboard from 'expo-clipboard';
+
+function mensaje(){
+    return(
+    <View style={{alignItems: 'center'}}>
+    {
+         Alert.alert(
+            "Aviso",
+            "Lo sentimos muchos , seguimos trabajando en esta funcionalidad.",
+            [
+              { text: "Ok"}
+            ]
+          )
+    }
+    </View>
+    )
+}
+
 function ResponseView({navigation,route}){
     const [copiedText, setCopiedText] = React.useState('');
-    const [clip,setclip]=React.useState("");
-    let {array} = route.params ;
-    let name = array["resultado"][0] ;
-    console.log(name);
-    let video = array["resultado"][0]["image"];
-    console.log(video);
-    let listado =[{}];
-    // let arrayResultado = JSON.stringify(array);
-   
 
-    // arrayResultado = JSON.parse(arrayResultado);
-    
-    // console.log(arrayResultado);
-    // arrayResultado = arrayResultado.slice(55,arrayResultado.length-2);
-    // arrayResultado = JSON.parse(arrayResultado) ;
-   
+    let {array} = route.params ;
+    array = array["resultado"] ;
+  
+    const name = array[0]["filename"] ;
+    const video = array[0]["image"];
+    let match = array[0]["similarity"] ;
+    match = match.toPrecision(2) ;
+    match = match *100 ;
     const copyToClipboard = async () => {
-        await Clipboard.setStringAsync();
+        await Clipboard.setStringAsync(name);
         };
     
       const fetchCopiedText = async () => {
@@ -31,14 +41,30 @@ function ResponseView({navigation,route}){
       }
     return(
         <View style={styles.Container}>
+            {
+                Alert.alert(
+                    "Aviso",
+                    "Si el porcentaje es  mayor a 90, es muy probable que tu búsqueda fue exitosa.",
+                [
+                  { text: "Entendido"}
+                ]
+                )
+            }
         
                 <View >
                     <Image source={{uri: video}} style={styles.ImageSearched}/>
-                    <Text> Nombre:</Text>
                   <TouchableOpacity onPress={copyToClipboard}>
-                    <Text>a</Text>
+                    <Text> Nombre: {name}</Text>
                   </TouchableOpacity>
+                  <Text> Porcentaje de coincidencia: {match}%</Text>
+                  <TouchableOpacity onPress={mensaje}>
+                    <View style={styles.UploadButton}>
+                        <Text style={styles.TextButton}>Ver más resultados</Text>
+                    </View>
+                    </TouchableOpacity>
                 </View>
+                
+                  
                 
         <StatusBar style="auto" />
         </View>
@@ -77,6 +103,7 @@ const styles= StyleSheet.create({
     UploadButton:{
         height:50,
         justifyContent: 'center',
+        marginTop:100,
         paddingLeft:10,
         paddingRight:10,
         borderRadius:10,

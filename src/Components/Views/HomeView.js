@@ -72,8 +72,7 @@ function HomeView({navigation}){
       .then((resultado)=>{
         setLink(resultado);
         verResultado();
-        searchAnime();
-        console.log(link)}
+        searchAnime()}
         )
         .catch(error => console.log(error));
       
